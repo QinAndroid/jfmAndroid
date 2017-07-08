@@ -1,10 +1,8 @@
 package com.withball.jfmlibrary;
 
 
-import android.util.Log;
-
 import com.withball.jfmlibrary.constants.UFDBConstants;
-import com.withball.jfmlibrary.idc.UFIDC;
+import com.withball.jfmlibrary.idc.IDC;
 import com.withball.jfmlibrary.kits.UFDefaultValueKits;
 
 import java.util.HashMap;
@@ -406,21 +404,18 @@ public abstract class UFModel<M extends UFModel> {
 
     }
 
-    private UFIDC idc = null;
 
-    public void setIdc(UFIDC idc) {
-        this.idc = idc;
+    private IDC mIDC = null;
+
+    public void setIdc(IDC idc) {
+        this.mIDC = idc;
     }
-
     private void checkIDC() {
-        if (null == idc) {
+        if (null == mIDC) {
             throw new IllegalArgumentException("idc is null");
         }
     }
 
-    public UFIDC getIdc() {
-        return idc;
-    }
 
     /**
      * Set Orders
@@ -437,27 +432,27 @@ public abstract class UFModel<M extends UFModel> {
 
     public QueryOut queryAll() {
         checkIDC();
-        return idc.queryAll(this);
+        return mIDC.queryAll(this);
     }
 
     public QueryOut querFirst() {
         checkIDC();
-        return idc.queryFirst(this);
+        return mIDC.queryFirst(this);
     }
 
     public void save() {
         checkIDC();
-        idc.save(this);
+        mIDC.save(this);
     }
 
     public void update() {
         checkIDC();
-        idc.update(this);
+        mIDC.update(this);
     }
 
     public void delete() {
         checkIDC();
-        idc.delete(this);
+        mIDC.delete(this);
     }
 
 

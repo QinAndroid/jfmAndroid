@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.withball.jfmlibrary.UFModel;
+import com.withball.jfmlibrary.constants.UFDBConstants;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -46,63 +47,41 @@ public class UFCursorToMapUtil {
         if (cursor == null) {
             return result;
         }
-
+        int cpunt = cursor.getCount();
+        Map<String, Class> attrs = getModelFileds(model);
         while (cursor.moveToNext()) {
-
             Object value = null;
-            Map<String,Object> item = new HashMap<>();
-            Map<String,Class> attrs = getModelFileds(model);
             Set<String> keySet = attrs.keySet();
             Iterator<String> iterator = keySet.iterator();
-            while (iterator.hasNext()){
+            Map<String, Object> item = new HashMap<>();
+            if (!item.containsKey(UFDBConstants.TABLENAME)) {
+//                item.put(UFDBConstants.TABLENAME,model.TABLENAME);
+                item.put(UFDBConstants.TABLENAME, model.get(UFDBConstants.TABLENAME).toString());
+            }
+            while (iterator.hasNext()) {
                 String name = iterator.next();
                 int position = cursor.getColumnIndex(name);
-                if(position == -1){
+                if (position == -1) {
                     continue;
                 }
                 Class clazz = attrs.get(name);
-                if(clazz.equals(Integer.class)){
+                if (clazz.equals(Integer.class)) {
                     value = cursor.getInt(position);
-                }else if(clazz.equals(String.class)){
+                } else if (clazz.equals(String.class)) {
                     value = cursor.getString(position);
-                }else if(clazz.equals(Long.class)){
+                } else if (clazz.equals(Long.class)) {
                     value = cursor.getLong(position);
-                }else if(clazz.equals(Double.class)){
+                } else if (clazz.equals(Double.class)) {
                     value = cursor.getDouble(position);
-                }else if(clazz.equals(Float.class)){
+                } else if (clazz.equals(Float.class)) {
                     value = cursor.getFloat(position);
-                }else if(clazz.equals(Short.class)){
+                } else if (clazz.equals(Short.class)) {
                     value = cursor.getShort(position);
                 }
-                item.put(name,value);
+                item.put(name, value);
+
             }
             result.add(item);
-//            Map<String, Object> item = new HashMap<>();
-//            int len = cursor.getColumnCount();
-//            for (int i = 0; i < len; i++) {
-//                String columnName = cursor.getColumnName(i);
-//                int position = cursor.getColumnIndex(columnName);
-//                if (position == -1) {
-//                    continue;
-//                }
-//                if(cursor.getString(position)!=null){
-//                    value = cursor.getString(position);
-//                }else if(cursor.getInt(position) != 0){
-//                    value = cursor.getInt(position);
-//                }else if (cursor.getLong(position) != 0) {
-//                    value = cursor.getLong(position);
-//                } else if (cursor.getDouble(position) != 0.0) {
-//                    value = cursor.getDouble(position);
-//                } else if (cursor.getFloat(position) != 0.0) {
-//                    value = cursor.getFloat(position);
-//                } else if (cursor.getString(position) != null) {
-//                    value = cursor.getString(position);
-//                } else if (cursor.getShort(position) != 0) {
-//                    value = cursor.getShort(position);
-//                }
-//                item.put(columnName, value);
-//            }
-//            result.add(item);
         }
         cursor.close();
         return result;
@@ -113,32 +92,36 @@ public class UFCursorToMapUtil {
         if (cursor == null) {
             return map;
         }
+        if (!map.containsKey(UFDBConstants.TABLENAME)) {
+//            map.put(UFDBConstants.TABLENAME,model.TABLENAME);
+            map.put(UFDBConstants.TABLENAME, model.get(UFDBConstants.TABLENAME));
+        }
+        Map<String, Class> attrs = getModelFileds(model);
         while (cursor.moveToNext()) {
             Object value = null;
-            Map<String,Class> attrs = getModelFileds(model);
             Set<String> keySet = attrs.keySet();
             Iterator<String> iterator = keySet.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 String name = iterator.next();
                 int position = cursor.getColumnIndex(name);
-                if(position == -1){
+                if (position == -1) {
                     continue;
                 }
                 Class clazz = attrs.get(name);
-                if(clazz.equals(Integer.class)){
+                if (clazz.equals(Integer.class)) {
                     value = cursor.getInt(position);
-                }else if(clazz.equals(String.class)){
+                } else if (clazz.equals(String.class)) {
                     value = cursor.getString(position);
-                }else if(clazz.equals(Long.class)){
+                } else if (clazz.equals(Long.class)) {
                     value = cursor.getLong(position);
-                }else if(clazz.equals(Double.class)){
+                } else if (clazz.equals(Double.class)) {
                     value = cursor.getDouble(position);
-                }else if(clazz.equals(Float.class)){
+                } else if (clazz.equals(Float.class)) {
                     value = cursor.getFloat(position);
-                }else if(clazz.equals(Short.class)){
+                } else if (clazz.equals(Short.class)) {
                     value = cursor.getShort(position);
                 }
-                map.put(name,value);
+                map.put(name, value);
             }
         }
         cursor.close();

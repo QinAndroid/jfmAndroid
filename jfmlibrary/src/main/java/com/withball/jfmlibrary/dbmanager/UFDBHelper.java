@@ -34,6 +34,12 @@ public class UFDBHelper extends SQLiteOpenHelper {
 
     private static final int VERSION = 1;
 
+    private static  boolean isShowLog = true;
+
+    public static void setIsShowLog(boolean show){
+        isShowLog = show;
+    }
+
     public static UFDBHelper getInstance(Context context, String name) {
         packageName = context.getPackageName()+".model";
         if (dbHelper == null) {
@@ -65,7 +71,6 @@ public class UFDBHelper extends SQLiteOpenHelper {
             if (!isTableExists(getDB(), tableName)) {
                 createTable(ufClass);
             }
-
         }
     }
 
@@ -225,6 +230,22 @@ public class UFDBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
+    }
+
+
+    public void execuSql(String sql,List<Object> args){
+        if(isShowLog){
+            Log.e(sql,args.toString());
+        }
+        getDB().execSQL(sql,args.toArray());
+    }
+
+    public Cursor query(String sql,List<String> args){
+        if(isShowLog){
+            Log.e(sql,args.toString());
+        }
+        Cursor cursor = getDB().rawQuery(sql,args.toArray(new String[args.size()]));
+        return cursor;
     }
 
 
